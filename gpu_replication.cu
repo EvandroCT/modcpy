@@ -1,8 +1,21 @@
-/*
- * Author: Evandro C Taquary
- * Compilation: nvcc -arch=sm_35 gpu_replication.cu modcpy.cu -o gpu
- * 
- * */
+/*************************************************************************
+	
+	Copyright (C) 2016	Evandro Taquary
+	
+	This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+	
+*************************************************************************/
 
 #include <iostream>
 #include <sys/time.h>
@@ -70,14 +83,14 @@ int main(int argc, char *argv[])
 	CHECK(cudaMemcpy(d_tree, &tree, treeBytes, cudaMemcpyHostToDevice));
 	CHECK(cudaMalloc((void **) &d_replic, repBytes));
 	
-/**********************PARALLEL MEASUREMENT**********************/
+/*******************************PARALLEL MEASUREMENT*******************************/
 	gettimeofday(&begin, NULL);
 	modcpy<<<grid, block>>>(d_replic, d_tree, repBytes, treeBytes);
 	CHECK(cudaDeviceSynchronize());
 	gettimeofday(&end, NULL);
 	time_spent = (double) (end.tv_usec - begin.tv_usec)/1000 + (end.tv_sec - begin.tv_sec)*1000;
 	cout << "Time spent:\t" << time_spent << "ms " <<  endl;
-/**********************PARALLEL MEASUREMENT**********************/		
+/*******************************PARALLEL MEASUREMENT*******************************/		
 
 	CHECK(cudaMemcpy(h_replics, d_replic, repBytes, cudaMemcpyDeviceToHost));
 

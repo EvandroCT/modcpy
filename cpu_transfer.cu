@@ -1,8 +1,21 @@
-/*
- * Author: Evandro C Taquary
- * Compilation: nvcc -arch=sm_35 cpu_transfer.cu -o cpu
- * 
- * */
+/*************************************************************************
+	
+	Copyright (C) 2016	Evandro Taquary
+	
+	This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+	
+*************************************************************************/
 
 #include <iostream>
 #include <sys/time.h>
@@ -59,13 +72,13 @@ int main(int argc, char *argv[])
 	
 	CHECK(cudaMalloc((void **) &d_replics, repBytes));
 	
-/**********************SERIAL MEASUREMENT**********************/
+/*******************************SERIAL MEASUREMENT*******************************/
 	gettimeofday(&begin, NULL);
 	CHECK(cudaMemcpy(d_replics, h_replics, repBytes, cudaMemcpyHostToDevice));
 	gettimeofday(&end, NULL);
 	time_spent = (double) (end.tv_usec-begin.tv_usec)/1000 + (end.tv_sec-begin.tv_sec)*1000;
 	cout << "Time spent:\t" << time_spent << "ms " <<  endl;
-/**********************SERIAL MEASUREMENT**********************/
+/*******************************SERIAL MEASUREMENT*******************************/
 	
 	for(int i=0; i<REPS; i++)
 		for(int j=0; j<NODS; j++)
